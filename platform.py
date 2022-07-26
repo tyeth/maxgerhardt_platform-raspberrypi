@@ -13,9 +13,12 @@
 # limitations under the License.
 
 import platform
+import sys
 
 from platformio.public import PlatformBase
 
+
+IS_WINDOWS = sys.platform.startswith("win")
 
 class RaspberrypiPlatform(PlatformBase):
 
@@ -50,6 +53,14 @@ class RaspberrypiPlatform(PlatformBase):
         # if we want to build a filesystem, we need the tools.
         if "buildfs" in targets:
             self.packages["tool-mklittlefs-rp2040-earlephilhower"]["optional"] = False
+
+        if "zephyr" in variables.get("pioframework", []):
+            for p in self.packages:
+                if p in ("tool-cmake", "tool-dtc", "tool-ninja"):
+                    self.packages[p]["optional"] = False
+            self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.80201.0"
+            if not IS_WINDOWS:
+                self.packages["tool-gperf"]["optional"] = False
 
         # configure J-LINK tool
         jlink_conds = [

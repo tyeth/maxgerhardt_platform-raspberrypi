@@ -23,6 +23,13 @@
     "arduino": {
       "package": "framework-arduino-mbed",
       "script": "builder/frameworks/arduino/arduino.py"
+    },
+    "zephyr": {
+      "package": "framework-zephyr",
+      "script": "builder/frameworks/zephyr.py",
+      "description": "The Zephyr Project is a scalable real-time operating system (RTOS) supporting multiple hardware architectures, optimized for resource constrained devices, and built with safety and security in mind",
+      "homepage": "https://www.zephyrproject.org",
+      "title": "Zephyr RTOS"
     }
   },
   "packages": {
@@ -49,6 +56,12 @@
       "owner": "earlephilhower",
       "version": "~1.20303.0"
     },
+    "framework-zephyr": {
+      "type": "framework",
+      "optional": true,
+      "owner": "platformio",
+      "version": "https://github.com/maxgerhardt/zephyr.git#3.1.0_pio"
+    },
     "tool-rp2040tools": {
       "type": "uploader",
       "owner": "platformio",
@@ -71,6 +84,26 @@
       "optional": true,
       "owner": "earlephilhower",
       "version": "~5.100300.0"
+    },
+    "tool-cmake": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "~3.21.0"
+    },
+    "tool-dtc": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.4.7"
+    },
+    "tool-ninja": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "^1.7.0"
+    },
+    "tool-gperf": {
+      "optional": true,
+      "owner": "platformio",
+      "version": "^3.0.0"
     }
   }
 }

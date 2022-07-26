@@ -213,6 +213,14 @@ env.Append(
 # Target: Build executable and linkable firmware
 #
 
+frameworks = env.get("PIOFRAMEWORK", [])
+if "zephyr" in frameworks:
+    env.SConscript(
+        join(platform.get_package_dir(
+            "framework-zephyr"), "scripts", "platformio", "platformio-build-pre.py"),
+        exports={"env": env}
+    )
+
 target_elf = None
 if "nobuild" in COMMAND_LINE_TARGETS:
     target_elf = join("$BUILD_DIR", "${PROGNAME}.elf")

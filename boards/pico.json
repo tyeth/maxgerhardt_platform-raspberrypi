@@ -21,7 +21,10 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "RASPBERRY_PI_PICO"
+    "variant": "RASPBERRY_PI_PICO",
+    "zephyr": {
+      "variant": "rpi_pico"
+    }
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",
@@ -29,7 +32,8 @@
     "svd_path": "rp2040.svd"
   },
   "frameworks": [
-    "arduino"
+    "arduino",
+    "zephyr"
   ],
   "name": "Raspberry Pi Pico",
   "upload": {
