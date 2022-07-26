@@ -59,6 +59,7 @@ class RaspberrypiPlatform(PlatformBase):
                 if p in ("tool-cmake", "tool-dtc", "tool-ninja"):
                     self.packages[p]["optional"] = False
             self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.80201.0"
+            self.packages.pop("toolchain-rp2040-earlephilhower", None)
             if not IS_WINDOWS:
                 self.packages["tool-gperf"]["optional"] = False
 

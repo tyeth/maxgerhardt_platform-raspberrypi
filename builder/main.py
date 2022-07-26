@@ -117,15 +117,35 @@ def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
 
 def generate_uf2(target, source, env):
     elf_file = target[0].get_path()
-    env.Execute(
-        " ".join(
-            [
-                "elf2uf2",
-                '"%s"' % elf_file,
-                '"%s"' % elf_file.replace(".elf", ".uf2"),
-            ]
+    print("Framework is :" + str(env["PIOFRAMEWORK"]))
+    if "zephyr" in env["PIOFRAMEWORK"]:
+        FRAMEWORK_DIR = env.PioPlatform().get_package_dir("framework-zephyr")
+        env.Execute(
+            " ".join(
+                [
+                    "$PYTHONEXE",
+                    '"%s"' % join(FRAMEWORK_DIR, "scripts", "uf2conv.py"),
+                    "-c",
+                    "-f",
+                    "RP2040",
+                    "-b",
+                    board.get("upload.offset_address", "0x10000000"),
+                    "-o",
+                    '"%s"' % elf_file.replace(".elf", ".uf2"),
+                    '"%s"' % elf_file,
+                ]
+            )
         )
-    )
+    else:
+        env.Execute(
+            " ".join(
+                [
+                    "elf2uf2",
+                    '"%s"' % elf_file,
+                    '"%s"' % elf_file.replace(".elf", ".uf2"),
+                ]
+            )
+        )
 
 
 env = DefaultEnvironment()
