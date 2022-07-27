@@ -116,7 +116,7 @@ def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
 
 
 def generate_uf2(target, source, env):
-    elf_file = target[0].get_path()
+    fw_file = target[0].get_path()
     print("Framework is :" + str(env["PIOFRAMEWORK"]))
     if "zephyr" in env["PIOFRAMEWORK"]:
         FRAMEWORK_DIR = env.PioPlatform().get_package_dir("framework-zephyr")
@@ -131,8 +131,8 @@ def generate_uf2(target, source, env):
                     "-b",
                     board.get("upload.offset_address", "0x10000000"),
                     "-o",
-                    '"%s"' % elf_file.replace(".elf", ".uf2"),
-                    '"%s"' % elf_file,
+                    '"%s"' % fw_file.replace(".bin", ".uf2"),
+                    '"%s"' % fw_file,
                 ]
             )
         )
@@ -141,8 +141,8 @@ def generate_uf2(target, source, env):
             " ".join(
                 [
                     "elf2uf2",
-                    '"%s"' % elf_file,
-                    '"%s"' % elf_file.replace(".elf", ".uf2"),
+                    '"%s"' % fw_file,
+                    '"%s"' % fw_file.replace(".elf", ".uf2"),
                 ]
             )
         )
@@ -259,8 +259,10 @@ env.AddPlatformTarget("buildfs", target_firm, target_firm, "Build Filesystem Ima
 AlwaysBuild(env.Alias("nobuild", target_firm))
 target_buildprog = env.Alias("buildprog", target_firm, target_firm)
 
+uf2_source = target_firm if "zephyr" in env["PIOFRAMEWORK"] else target_elf
+
 env.AddPostAction(
-    target_elf, env.VerboseAction(generate_uf2, "Generating UF2 image")
+    uf2_source, env.VerboseAction(generate_uf2, "Generating UF2 image")
 )
 
 def _update_max_upload_size(env):
